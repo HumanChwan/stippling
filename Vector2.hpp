@@ -19,6 +19,7 @@ struct Vector2 {
 
     uint64_t l2_distance();
     uint64_t l1_distance();
+    uint64_t length();
 };
 
 

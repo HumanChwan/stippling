@@ -9,7 +9,7 @@ typedef std::vector<Color> PixelMap;
 
 #define RED   ((Color)0xFF0000FF)
 #define GREEN ((Color)0xFF00FF00)
-#define BLUE  ((Color)0xFFFF00FF)
+#define BLUE  ((Color)0xFFFF0000)
 #define BLACK ((Color)0xFF000000)
 #define WHITE ((Color)0xFFFFFFFF)
 
@@ -24,6 +24,8 @@ public:
 
     size_t getWidth() const;
     size_t getHeight() const;
+
+    uint8_t getColor(Vector2 coord);
 
     void fillPoint(Vector2 coord, Color color) { data[coord.y * stride + coord.x] = color; }
     void fillByColor(Color color);

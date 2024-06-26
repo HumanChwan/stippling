@@ -11,6 +11,10 @@ bool Image::isValidVector(Vector2 vec) {
 size_t Image::getWidth() const { return width; }
 size_t Image::getHeight() const { return height; }
 
+uint8_t Image::getColor(Vector2 coord) {
+    return data[coord.y * stride + coord.x];
+}
+
 Image::Image(size_t width, size_t height)
     : width(width), height(height), stride(width) {
     data.assign(height * width, BLACK);
