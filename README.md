@@ -12,3 +12,6 @@
 
 - Black Circle at the center:
 ![circle_center.png](./examples/circle_center.png)
+
+- Black circle at the center, with the initial uniform distribution as a square enclosing the circle: (2000 pts)
+![circle_center.png](./examples/circle_center_with_rect_init_distribution.png)
