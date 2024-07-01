@@ -3,7 +3,7 @@
 struct Vector2 {
     std::int32_t x, y;
 
-    static Vector2 zeroes() { return Vector2(0, 0); } 
+    static Vector2 zeroes() { return Vector2(0, 0); }
 
     Vector2(std::int32_t x, std::int32_t y);
 
@@ -26,4 +26,3 @@ struct Vector2 {
     std::uint64_t l1_distance() const;
     std::uint64_t length() const;
 };
-
