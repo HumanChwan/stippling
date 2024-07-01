@@ -7,3 +7,8 @@
     $ make
     $ ./main
     ```
+
+## Examples
+
+- Black Circle at the center:
+![circle_center.png](./examples/circle_center.png)
