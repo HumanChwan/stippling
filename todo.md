@@ -1,0 +1,1 @@
+- how to initialise the voronoi points.
