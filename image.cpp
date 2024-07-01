@@ -11,7 +11,7 @@ bool Image::isValidVector(Vector2 vec) {
 size_t Image::getWidth() const { return width; }
 size_t Image::getHeight() const { return height; }
 
-uint8_t Image::getColor(Vector2 coord) {
+Color Image::getColor(Vector2 coord) {
     return data[coord.y * stride + coord.x];
 }
 
@@ -38,6 +38,16 @@ void Image::fillCircle(Vector2 center, size_t radius, Color color) {
 
             if (distance <= 1ULL * radius * radius) 
                 fillPoint(vec, color);
+        }
+    }
+}
+
+void Image::fillRectangle(Vector2 topLeft, size_t r_width, size_t r_height, Color color) {
+    for (size_t y = topLeft.y; y <= topLeft.y + r_height; ++y) {
+        for (size_t x = topLeft.x; x <= topLeft.x + r_width; ++x) {
+            Vector2 coord(x, y);
+            if (!isValidVector(coord)) continue;
+            fillPoint(coord, color);
         }
     }
 }

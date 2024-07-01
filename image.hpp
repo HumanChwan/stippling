@@ -25,11 +25,12 @@ public:
     size_t getWidth() const;
     size_t getHeight() const;
 
-    uint8_t getColor(Vector2 coord);
+    Color getColor(Vector2 coord);
 
     void fillPoint(Vector2 coord, Color color) { data[coord.y * stride + coord.x] = color; }
     void fillByColor(Color color);
     void fillCircle(Vector2 center, size_t radius, Color color);
+    void fillRectangle(Vector2 topLeft, size_t width, size_t height, Color color);
 
     // Methods to save images to disk
     void saveAsPNG(const std::string filename) const;
