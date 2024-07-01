@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <string>
+#include <queue>
 #include <time.h>
 
 #include "image.hpp"
@@ -15,7 +16,7 @@ constexpr uint32_t FACTOR = 100;
 constexpr uint32_t WIDTH  = 16 * FACTOR;
 constexpr uint32_t HEIGHT = 9 * FACTOR;
 
-constexpr uint32_t GENERATOR_POINTS = 100;
+constexpr uint32_t GENERATOR_POINTS = 2000;
 constexpr uint32_t GENERATOR_RADIUS = 5;
 
 constexpr uint32_t ITERATIONS = 10;
@@ -35,28 +36,72 @@ inline std::int32_t get_random_region(std::int32_t center, std::int32_t distance
 std::vector<Vector2> generateGenerators(std::size_t N) {
     std::vector<Vector2> generators;
     for (std::size_t i = 0; i < N; ++i)
-        generators.push_back(Vector2(get_random_region(WIDTH/2, WIDTH/6), get_random_region(HEIGHT/2, HEIGHT/6)));
+        generators.push_back(Vector2(get_random_region(WIDTH/2, HEIGHT/6), get_random_region(HEIGHT/2, HEIGHT/6)));
     return generators;
 
 }
 
-std::vector<VoronoiBoundary> getVoronoiBoundaries(Image& img, std::vector<Vector2>& generators) {
+template<typename T>
+using Grid = std::vector<std::vector<T>> ;
+
+bool operator<(const Vector2& A, const Vector2& B) {
+    return A.length() < B.length();
+}
+
+std::vector<VoronoiBoundary> getVoronoiBoundaries(Image& img, std::vector<Vector2>& generators, bool drawBoundaries = false) {
     std::vector<VoronoiBoundary> boundaries(generators.size());
+    static Vector2 dir4[]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    const std::uint32_t width = img.getWidth(), 
+                        height = img.getHeight();
+
+    Grid<std::size_t> voronoiImage(height, std::vector<std::size_t>(width));
+    Grid<bool> visited(height, std::vector<bool>(width, false));
+
+    std::priority_queue<std::pair<std::int64_t, std::pair<Vector2, Vector2>>> Q;
+
+
+    for (std::size_t i = 0; i < generators.size(); ++i) {
+        Q.push({0, {generators[i], generators[i]}});
+        voronoiImage[generators[i].y][generators[i].x] = i;
+    }
+
+    while (!Q.empty()) {
+        auto top = Q.top();
+        Q.pop();
+
+        auto& [coord, parent] = top.second;
+        if (visited[coord.y][coord.x]) continue;
+
+        visited[coord.y][coord.x] = true;
+        std::size_t index = voronoiImage[coord.y][coord.x] = voronoiImage[parent.y][parent.x];
+        
+        for (auto& d : dir4) {
+            Vector2 child = coord + d;
+            if (!child.contained(Vector2::zeroes(), Vector2(width, height))) continue;
+            if (visited[child.y][child.x]) continue;
+
+            Q.push({(std::int64_t)generators[index].sub(child).length() * -1, {child, coord}});
+        }
+    }
+    
 
     for (std::size_t y = 0; y < img.getHeight(); ++y) {
         std::size_t previousGenerator = generators.size();
         for (std::size_t x = 0; x < img.getWidth(); ++x) {
             Vector2 coord(x, y);
             
-            std::size_t minIdx = 0;
-            for (std::size_t i = 0; i < generators.size(); ++i)
-                if (coord.sub(generators[i]).length() < coord.sub(generators[minIdx]).length())
-                    minIdx = i;
+            std::size_t minIdx = voronoiImage[y][x];
+            // std::size_t minIdx = 0;
+            // for (std::size_t i = 0; i < generators.size(); ++i)
+            //     if (coord.sub(generators[i]).length() < coord.sub(generators[minIdx]).length())
+            //         minIdx = i;
 
             if (previousGenerator != minIdx) {
                 boundaries[minIdx].push_back({coord, coord});
 
-                img.fillPoint(coord, BLUE);
+                if (drawBoundaries)
+                    img.fillPoint(coord, BLUE);
 
                 if (previousGenerator < generators.size())
                     boundaries[previousGenerator].back().second.x = coord.x - 1;
@@ -135,17 +180,14 @@ int main() {
 
     std::vector<Vector2> generators = generateGenerators(GENERATOR_POINTS);
 
-    img.fillByColor(WHITE);
-    // Color colors[] = {0xFFAAAAAA, 0xFF999999, 0xFF777777, 0xFF363636, 0xFF000000};
-    // for (std::size_t i = 0; i < 5; ++i)
-    //     img.fillCircle(Vector2(WIDTH/2, HEIGHT/2), (5 - i) * HEIGHT/6, colors[i]);
+    img.fillByColor(0xFFBCBCBC);
     img.fillCircle(Vector2(WIDTH/2, HEIGHT/2), HEIGHT/6, BLACK);
 
     std::pair<PrefixFunction, PrefixFunction> prefixFunctions = computePrefixFunctions(img);
 
     for (std::size_t i = 0; i < ITERATIONS; ++i) {
         std::cout << "ITERATION: " << i + 1 << '\n';
-        std::vector<VoronoiBoundary> boundaries = getVoronoiBoundaries(img, generators);
+        std::vector<VoronoiBoundary> boundaries = getVoronoiBoundaries(img, generators, (i == ITERATIONS - 1));
         generators = computeVoronoiCenters(boundaries, prefixFunctions);
     }
 
