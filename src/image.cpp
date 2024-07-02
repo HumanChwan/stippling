@@ -89,7 +89,7 @@ std::pair<PrefixFunction, PrefixFunction> Image::computePrefixFunctions() {
 Image Image::from(const std::string filename) {
     std::int32_t width, height, components;
     Color* pixelData = (Color*)stbi_load(filename.c_str(), &width, &height, &components, 4);
-    if (pixelData == NULL) { exit(1); }
+    if (pixelData == NULL) { throw "File probably does not exist to be loaded as image.\n"; }
 
     assert((components == 4 or components == 3) && "Must have 3 or 4 components: RGB[A]\n");
     assert(width > 0 && "Width must be positive\n");
@@ -101,8 +101,9 @@ Image Image::from(const std::string filename) {
             std::size_t index = y * img.stride + x;
             img.data[index] = pixelData[index];
 
+            // check if alpha is 0, then set pixel as WHITE.
             if (((img.data[index] >> (8 * 3)) & 0xFF) == 0)
-                img.data[index] = 0xFFFFFFF;
+                img.data[index] = WHITE;
         }
     }
 
