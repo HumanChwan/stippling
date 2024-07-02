@@ -1,4 +1,4 @@
-- [ ] How to initialise the voronoi points?  
+- [x] How to initialise the voronoi points?  
     This can be sampled based on the probability distribution formed by the pixel luminance.    
 
     Paper proposes the use of rejection sampling which is basically sampling a bunch of pixels initially using 
