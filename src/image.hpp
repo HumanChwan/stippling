@@ -1,3 +1,6 @@
+#ifdef STIPPLING_IMAGE_
+#define STIPPLING_IMAGE_
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -40,3 +43,5 @@ class Image {
     void saveAsPNG(const std::string filename) const;
     void saveAsPPM(const std::string filename) const;
 };
+
+#endif // STIPPLING_IMAGE_

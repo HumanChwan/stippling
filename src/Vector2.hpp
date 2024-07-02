@@ -1,3 +1,6 @@
+#ifdef STIPPLING_VECTOR2_
+#define STIPPLING_VECTOR2_
+
 #include <cstdint>
 
 struct Vector2 {
@@ -26,3 +29,5 @@ struct Vector2 {
     std::uint64_t l1_distance() const;
     std::uint64_t length() const;
 };
+
+#endif // STIPPLING_VECTOR2_
