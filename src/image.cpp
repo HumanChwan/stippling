@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "stb_image_write.h"
+#include "thirdparty/stb_image_write.h"
 
 bool Image::isValidVector(Vector2 vec) {
     return (0 <= vec.x && vec.x < (int32_t)width && 0 <= vec.y &&
