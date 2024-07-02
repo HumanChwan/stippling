@@ -13,6 +13,8 @@ using Grid = std::vector<std::vector<T>>;
 typedef std::vector<std::pair<Vector2, Vector2>> VoronoiBoundary;
 
 std::vector<Vector2> randomizeGenerators(std::size_t N, Vector2 max);
+std::vector<Vector2> rejectionSampling(std::size_t N, Image& img);
+
 Grid<std::size_t> getVoronoiDiagram(Image& img,
                                     std::vector<Vector2>& generators);
 

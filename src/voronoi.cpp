@@ -22,9 +22,29 @@ inline Vector2 get_random_region(Vector2 center, Vector2 distance) {
 std::vector<Vector2> randomizeGenerators(std::size_t N, Vector2 max) {
     std::vector<Vector2> generators;
     for (std::size_t i = 0; i < N; ++i)
-        generators.push_back(
-            get_random_region(max / 2, Vector2::from(max.y / 6)));
+        generators.push_back(Vector2(rand() % max.x, rand() % max.y));
     return generators;
+}
+
+std::vector<Vector2> rejectionSampling(std::size_t N, Image& img) {
+    Grid<double> darkness(img.getHeight(), std::vector<double>(img.getWidth()));
+    for (std::size_t y = 0; y < img.getHeight(); ++y)
+        for (std::size_t x = 0; x < img.getWidth(); ++x)
+            darkness[y][x] = Image::getDarkness(img.getColor(Vector2(x, y)));
+
+    std::vector<Vector2> acceptedGenerators;
+
+    Vector2 dimensions(img.getWidth(), img.getHeight());
+
+    while (acceptedGenerators.size() < N) {
+        // sample uniformly & check if their pdf is lesser than darkness.
+        for (auto sample : randomizeGenerators(N - acceptedGenerators.size(), dimensions)) {
+            if (rand() % 256 <= darkness[sample.y][sample.x])
+                acceptedGenerators.push_back(sample);
+        }
+    }
+
+    return acceptedGenerators;
 }
 
 bool operator<(const Vector2& A, const Vector2& B) {
