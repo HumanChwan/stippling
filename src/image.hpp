@@ -9,6 +9,7 @@
 
 typedef std::uint32_t Color;
 typedef std::vector<Color> PixelMap;
+typedef std::vector<std::vector<long double>> PrefixFunction;
 
 #define RED ((Color)0xFF0000FF)
 #define GREEN ((Color)0xFF00FF00)
@@ -38,6 +39,8 @@ class Image {
     void fillCircle(Vector2 center, size_t radius, Color color);
     void fillRectangle(Vector2 topLeft, size_t width, size_t height,
                        Color color);
+
+    std::pair<PrefixFunction, PrefixFunction> computePrefixFunctions();
 
     // Methods to save images to disk
     void saveAsPNG(const std::string filename) const;

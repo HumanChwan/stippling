@@ -51,6 +51,35 @@ void Image::fillRectangle(Vector2 topLeft, size_t r_width, size_t r_height,
     }
 }
 
+std::pair<PrefixFunction, PrefixFunction> Image::computePrefixFunctions() {
+    PrefixFunction P(getHeight(), std::vector<long double>(getWidth())),
+        Q(getHeight(), std::vector<long double>(getWidth()));
+
+    auto getDarkness = [](Color color) -> long double {
+        uint32_t R = (color >> (8 * 0)) & 0xFF, G = (color >> (8 * 1)) & 0xFF,
+                 B = (color >> (8 * 2)) & 0xFF;
+
+        // source: https://en.wikipedia.org/wiki/Relative_luminance
+        auto darkness = 255.0 - (0.2126 * R + 0.7152 * G + 0.0722 * B);
+        return darkness * darkness *
+               darkness;  // increase the ``weight" of darkness by cubing.
+    };
+
+    for (std::size_t y = 0; y < getHeight(); ++y) {
+        P[y][0] = getDarkness(getColor(Vector2(0, y)));
+        Q[y][0] = 0.0;
+
+        for (std::size_t x = 1; x < getWidth(); ++x) {
+            auto darkness = getDarkness(getColor(Vector2(x, y)));
+
+            P[y][x] = P[y][x - 1] + darkness;
+            Q[y][x] = Q[y][x - 1] + darkness * x;
+        }
+    }
+
+    return std::make_pair(P, Q);
+}
+
 void Image::saveAsPNG(const std::string filename) const {
     stbi_write_png(filename.c_str(), width, height, 4, data.data(),
                    stride * sizeof(Color));
