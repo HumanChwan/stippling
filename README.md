@@ -5,7 +5,7 @@
 - Build the executable and run.
     ```console
     $ make
-    $ ./main
+    $ ./stipple -h
     ```
 
 ## Examples

@@ -1,11 +1,11 @@
 CC=g++
-CFLAGS=-Wall -Werror -Wextra -std=c++17 -O3
+CFLAGS=-Wall -Werror -Wextra -std=c++17 -O3 -g
 OBJECT_FILES=image.o Vector2.o voronoi.o stb_image_write.o stb_image.o
 HEADER_FILES=src/image.hpp src/Vector2.hpp src/voronoi.hpp src/thirdparty/stb_image_write.h src/thirdparty/stb_image.h
 
-all: main
+all: stipple
 
-main: src/main.cpp $(OBJECT_FILES) $(HEADER_FILES)
+stipple: src/main.cpp $(OBJECT_FILES) $(HEADER_FILES)
 	$(CC) $(CFLAGS) -o $@ src/main.cpp $(OBJECT_FILES)
 
 image.o: src/image.cpp src/image.hpp
@@ -25,4 +25,4 @@ stb_image.o: src/thirdparty/stb_image.c src/thirdparty/stb_image.h
 
 
 clean:
-	rm -f main.exe $(OBJECT_FILES)
+	rm -f stipple $(OBJECT_FILES)
