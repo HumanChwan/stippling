@@ -1,4 +1,4 @@
-#ifdef STIPPLING_VECTOR2_
+#ifndef STIPPLING_VECTOR2_
 #define STIPPLING_VECTOR2_
 
 #include <cstdint>

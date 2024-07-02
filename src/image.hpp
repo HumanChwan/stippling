@@ -1,4 +1,4 @@
-#ifdef STIPPLING_IMAGE_
+#ifndef STIPPLING_IMAGE_
 #define STIPPLING_IMAGE_
 
 #include <cstdint>
