@@ -26,6 +26,7 @@ class Image {
 
    public:
     Image(size_t width, size_t height);
+    static double getDarkness(Color color);
 
     size_t getWidth() const;
     size_t getHeight() const;
