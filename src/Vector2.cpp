@@ -8,12 +8,15 @@ Vector2 Vector2::add(std::int32_t A) const { return Vector2(x + A, y + A); }
 
 Vector2 Vector2::sub(std::int32_t A) const { return Vector2(x - A, y - A); }
 
+Vector2 Vector2::divide(std::int32_t A) const { return Vector2(x / A, y / A); }
+
 Vector2 Vector2::add(Vector2 A) const { return Vector2(x + A.x, y + A.y); }
 
 Vector2 Vector2::sub(Vector2 A) const { return Vector2(x - A.x, y - A.y); }
 
 Vector2 Vector2::operator+(std::int32_t A) const { return add(A); }
 Vector2 Vector2::operator-(std::int32_t A) const { return sub(A); }
+Vector2 Vector2::operator/(std::int32_t A) const { return divide(A); }
 
 Vector2 Vector2::operator+(const Vector2 A) const { return add(A); }
 Vector2 Vector2::operator-(const Vector2 A) const { return sub(A); }

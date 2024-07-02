@@ -186,9 +186,10 @@ int main() {
     Image img(WIDTH, HEIGHT);
 
     std::vector<Vector2> generators = generateGenerators(GENERATOR_POINTS);
+    Vector2 dimensions(WIDTH, HEIGHT);
 
-    img.fillByColor(0xFFBCBCBC);
-    img.fillCircle(Vector2(WIDTH / 2, HEIGHT / 2), HEIGHT / 6, BLACK);
+    img.fillByColor(0xFFFEFEFE);
+    img.fillCircle(dimensions / 2, HEIGHT / 6, BLACK);
 
     std::pair<PrefixFunction, PrefixFunction> prefixFunctions =
         computePrefixFunctions(img);

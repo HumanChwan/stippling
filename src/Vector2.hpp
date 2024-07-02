@@ -12,12 +12,14 @@ struct Vector2 {
 
     Vector2 add(std::int32_t A) const;
     Vector2 sub(std::int32_t A) const;
+    Vector2 divide(std::int32_t A) const;
 
     Vector2 add(Vector2 A) const;
     Vector2 sub(Vector2 A) const;
 
     Vector2 operator+(std::int32_t A) const;
     Vector2 operator-(std::int32_t A) const;
+    Vector2 operator/(std::int32_t A) const;
 
     Vector2 operator+(const Vector2 A) const;
     Vector2 operator-(const Vector2 A) const;
