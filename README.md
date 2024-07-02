@@ -10,6 +10,12 @@
 
 ## Examples
 
+- Butterfly: (100000 pts)
+![butterfly.png](./examples/butterfly-contrast.png)
+
+- Dog: (20000 pts)
+![dog.png](./examples/black-dog-constrast.png)
+
 - Black circle at the center:
 ![circle_center.png](./examples/circle_center.png)
 
