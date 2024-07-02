@@ -21,7 +21,6 @@ constexpr uint32_t GENERATOR_RADIUS = 5;
 
 constexpr uint32_t ITERATIONS = 10;
 
-
 int main() {
     srand(time(NULL));
 
@@ -29,10 +28,11 @@ int main() {
 
     Vector2 dimensions(WIDTH, HEIGHT);
 
-    std::vector<Vector2> generators = randomizeGenerators(GENERATOR_POINTS, dimensions);
+    std::vector<Vector2> generators =
+        randomizeGenerators(GENERATOR_POINTS, Vector2(HEIGHT / 3, HEIGHT / 3));
 
     img.fillByColor(0xFFFEFEFE);
-    img.fillCircle(dimensions / 2, HEIGHT / 6, BLACK);
+    img.fillCircle(Vector2(HEIGHT / 6, HEIGHT / 6), HEIGHT / 6, BLACK);
 
     std::pair<PrefixFunction, PrefixFunction> prefixFunctions =
         img.computePrefixFunctions();

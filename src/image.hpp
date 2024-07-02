@@ -47,4 +47,4 @@ class Image {
     void saveAsPPM(const std::string filename) const;
 };
 
-#endif // STIPPLING_IMAGE_
+#endif  // STIPPLING_IMAGE_

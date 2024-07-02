@@ -32,4 +32,4 @@ struct Vector2 {
     std::uint64_t length() const;
 };
 
-#endif // STIPPLING_VECTOR2_
+#endif  // STIPPLING_VECTOR2_
