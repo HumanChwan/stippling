@@ -6,13 +6,14 @@
 struct Vector2 {
     std::int32_t x, y;
 
-    static Vector2 zeroes() { return Vector2(0, 0); }
+    static Vector2 zeroes();
+    static Vector2 from(std::int32_t A);
 
     Vector2(std::int32_t x, std::int32_t y);
 
     Vector2 add(std::int32_t A) const;
     Vector2 sub(std::int32_t A) const;
-    Vector2 divide(std::int32_t A) const;
+    Vector2 div(std::int32_t A) const;
 
     Vector2 add(Vector2 A) const;
     Vector2 sub(Vector2 A) const;
