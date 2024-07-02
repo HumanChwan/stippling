@@ -57,7 +57,7 @@ Grid<std::size_t> getVoronoiDiagram(Image& img,
 
     const std::uint32_t width = img.getWidth(), height = img.getHeight();
 
-    Grid<std::size_t> voronoiImage(height, std::vector<std::size_t>(width));
+    Grid<std::size_t> voronoiImage(height, std::vector<std::size_t>(width, 0));
     Grid<bool> visited(height, std::vector<bool>(width, false));
 
     std::priority_queue<std::pair<std::int64_t, std::pair<Vector2, Vector2>>> Q;
