@@ -14,10 +14,16 @@ inline std::int32_t get_random_region(std::int32_t center,
     return get_random(center - distance, center + distance);
 }
 
+inline Vector2 get_random_region(Vector2 center, Vector2 distance) {
+    return Vector2(get_random_region(center.x, distance.x),
+                   get_random_region(center.y, distance.y));
+}
+
 std::vector<Vector2> randomizeGenerators(std::size_t N, Vector2 max) {
     std::vector<Vector2> generators;
     for (std::size_t i = 0; i < N; ++i)
-        generators.push_back(Vector2(rand() % max.x, rand() % max.y));
+        generators.push_back(
+            get_random_region(max / 2, Vector2::from(max.y / 6)));
     return generators;
 }
 
