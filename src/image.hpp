@@ -26,7 +26,9 @@ class Image {
 
    public:
     Image(size_t width, size_t height);
+
     static double getDarkness(Color color);
+    static Image from(const std::string filename);
 
     size_t getWidth() const;
     size_t getHeight() const;
@@ -46,6 +48,7 @@ class Image {
     // Methods to save images to disk
     void saveAsPNG(const std::string filename) const;
     void saveAsPPM(const std::string filename) const;
+
 };
 
 #endif  // STIPPLING_IMAGE_

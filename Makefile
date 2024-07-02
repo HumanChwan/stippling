@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-Wall -Werror -Wextra -std=c++17 -O3
-OBJECT_FILES=image.o stb_image_write.o Vector2.o voronoi.o
-HEADER_FILES=src/image.hpp src/Vector2.hpp src/voronoi.hpp src/thirdparty/stb_image_write.h
+OBJECT_FILES=image.o Vector2.o voronoi.o stb_image_write.o stb_image.o
+HEADER_FILES=src/image.hpp src/Vector2.hpp src/voronoi.hpp src/thirdparty/stb_image_write.h src/thirdparty/stb_image.h
 
 all: main
 
@@ -19,6 +19,9 @@ voronoi.o: src/voronoi.cpp src/voronoi.hpp
 
 stb_image_write.o: src/thirdparty/stb_image_write.c src/thirdparty/stb_image_write.h
 	gcc -c src/thirdparty/stb_image_write.c
+
+stb_image.o: src/thirdparty/stb_image.c src/thirdparty/stb_image.h
+	gcc -c src/thirdparty/stb_image.c
 
 
 clean:

@@ -1,8 +1,10 @@
 #include "image.hpp"
 
 #include <algorithm>
+#include <cassert>
 
 #include "thirdparty/stb_image_write.h"
+#include "thirdparty/stb_image.h"
 
 bool Image::isValidVector(Vector2 vec) {
     return (0 <= vec.x && vec.x < (int32_t)width && 0 <= vec.y &&
@@ -57,8 +59,11 @@ double Image::getDarkness(Color color) {
 
     // source: https://en.wikipedia.org/wiki/Relative_luminance
     auto darkness = 256.0 - (0.2126 * R + 0.7152 * G + 0.0722 * B);
-    return darkness * darkness *
-           darkness;  // increase the ``weight" of darkness by cubing.
+    darkness *= darkness;
+    darkness *= darkness;
+    darkness *= darkness;
+
+    return darkness;
 }
 
 std::pair<PrefixFunction, PrefixFunction> Image::computePrefixFunctions() {
@@ -78,6 +83,34 @@ std::pair<PrefixFunction, PrefixFunction> Image::computePrefixFunctions() {
     }
 
     return std::make_pair(P, Q);
+}
+
+
+Image Image::from(const std::string filename) {
+    std::int32_t width, height, components;
+    Color* pixelData = (Color*)stbi_load(filename.c_str(), &width, &height, &components, 4);
+    if (pixelData == NULL) { exit(1); }
+
+    assert((components == 4 or components == 3) && "Must have 3 or 4 components: RGB[A]\n");
+    assert(width > 0 && "Width must be positive\n");
+    assert(height > 0 && "Height must be positive\n");
+
+    Image img(width, height);
+    for (std::int32_t y = 0; y < height; ++y) {
+        for (std::int32_t x = 0; x < width; ++x) {
+            std::size_t index = y * img.stride + x;
+            img.data[index] = pixelData[index];
+
+            if (((img.data[index] >> (8 * 3)) & 0xFF) == 0)
+                img.data[index] = 0xFFFFFFF;
+        }
+    }
+
+    // NOTE: I have no clue if this memory is malloc-ed or not. Would
+    // have to read the source of stbi_load(). But too lazy.
+    free(pixelData);
+
+    return img;
 }
 
 void Image::saveAsPNG(const std::string filename) const {
